@@ -24,13 +24,8 @@ class HomeController extends Controller
      * @Route("/",name="homepage")
      */
     public function home(){
-        $prenoms = ["Lior"=>31,"Jospeh"=>31,"Anne"=>31];
         return $this->render(
-            "home.html.twig",
-            ['title' => 'Bonjour a tous',
-                "age" => "31",
-                "tab" => $prenoms
-                ]
+            "home.html.twig"
         );
     }
 

@@ -1,0 +1,14 @@
+.maxTitle > h1, .maxTitle>p {
+    text-shadow: 3px 3px 3px #1b1e21;
+}
+
+.maxTitle{
+    background-size: cover;
+    background-position: center center;
+}
+
+@media screen and (max-width: 540px) {
+    .heightAd {
+        height:205px !important;
+    }
+}
