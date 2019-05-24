@@ -12,3 +12,12 @@
         height:205px !important;
     }
 }
+
+footer.blue.font-small.page-footer.pt-4.py-5 {
+    background-color: #4582EC !important;
+    color: white;
+}
+
+footer a {
+    color: white;
+}

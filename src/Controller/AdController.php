@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Form\AnnonceType;
 use App\Repository\AdRepository;
+
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,16 +38,30 @@ class AdController extends Controller
      * @return Response
      */
 
-    public function create(){
+    public function create(Request $request){
+
         $ad = new ad;
-        $form= $this->createForm(AdType::class, $ad);
+        $form= $this->createForm(AnnonceType::class, $ad);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($ad);
+            $manager->flush();
 
-         $formBuilded= $form->getForm();
 
+
+            return $this->redirectToRoute('ads_show',[
+                'slug'=> $ad->getSlug(),
+                'popup' => 'Felicitation ! vous venez de créer votre annonce !'
+            ]);
+        }
+        dump($ad);
         return $this->render('ad/new.html.twig', [
             'controller_name' => 'AdController',
-            'form'=>$formBuilded->createView()
+            'form'=>$form->createView()
         ]);
+
+
     }
 
 
@@ -54,11 +71,12 @@ class AdController extends Controller
      * @return Response
      */
 
-    public function show($slug, AdRepository $repo){
+    public function show($slug, AdRepository $repo, Request $request ){
         $ad = $repo->findOneBySlug($slug);
         return $this->render('ad/show.html.twig', [
             'controller_name' => 'AdController',
-            'ad' => $ad
+            'ad' => $ad,
+            'popup' => $request->query->get("popup")
         ]);
     }
 
