@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %} - Creation d'une annonce{% endblock %}
-{% form_theme form _self %}
+{% form_theme form 'ad/_collection.html.twig' %}
 {% block body %}
 <div class="container mt-4">
     <h1>Créer une nouvelle annonce</h1>
@@ -13,62 +13,8 @@
 {% endblock %}
 
 
-{% block form_row %}
-    <div class="form-group">
-
-        {{ form_widget(form, {'attr':{'class':'form-control','placeholder':name }}) }}
-    </div>
-{% endblock %}
-
-
-{% block _annonce_images_widget %}
-    <div class="displayMore">
-    <p>Ici, vous pouvez ajouter vos propres images</p>
-        <p class="h5">Images :</p>
-    {{ form_widget(form) }}
-        <input type="hidden" id="widgets-counter" value="0">
-<div class="row">
-    <div class="form-group">
-        <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
-    </div>
-
-</div>
-    </div>
-{% endblock %}
-
-{% block _annonce_images_entry_widget %}
-<div class="form-group" id="block_{{ id }}">
-    <div class="row">
-        <div class="col">
-            {{form_widget(form.url)}}
-        </div>
-        <div class="col">
-            {{form_widget(form.caption)}}
-        </div>
-        <button type="button" data-action="delete" data-target="#block_{{ id }}" class="remove-image btn btn-danger">X</button>
-    </div>
-</div>
-{% endblock %}
-
 {% block javascripts %}
-    <script>
-
-    $("#add-image").click(function(){
-        const index = +$('#widgets-counter').val();
-        var datahtml = $("#annonce_images").data('prototype').replace(/_name/g, index);
-        $("#annonce_images").append(datahtml);
-        $('#widgets-counter').val(index + 1 )
-        HandleDeleteButtons();
-    });
-
-    function HandleDeleteButtons() {
-        $('button[data-action="delete"]').click(function(){
-            var target = this.dataset.target;
-            console.log(target);
-            $(target).remove();
-        });
-    }
-
+    <script src="/js/app.js">
 
 
     </script>

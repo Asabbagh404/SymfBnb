@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+- Edit annonce {% endblock %}
+
+{% form_theme form 'ad/_collection.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h1>Editer annonce : {{ ad.title }}</h1>
+        {{ form_start(form) }}
+
+        {{ form_end(form) }}
+
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/app.js">
+
+
+
+
+    </script>
+{% endblock %}

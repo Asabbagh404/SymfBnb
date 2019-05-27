@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +69,44 @@ class AdController extends Controller
             'form'=>$form->createView()
         ]);
 
+
+    }
+
+
+
+
+
+    /**
+     * @Route("/ads/{slug}/edit", name="ads_edit")
+     *
+     * @return Response
+     */
+
+    public function edit($slug, Request $request, AdRepository $repo, ObjectManager $manager){
+        $ad = $repo->findOneBySlug($slug);
+        $form= $this->createForm(AnnonceType::class, $ad);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getManager();
+            foreach($ad->getImages()as $image){
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
+            $manager->persist($ad);
+            $manager->flush();
+
+
+
+            return $this->redirectToRoute('ads_show',[
+                'slug'=> $ad->getSlug(),
+                'popup' => 'Felicitation ! vous venez de modifier votre annonce !'
+            ]);
+        }
+
+        return $this->render('ad/edit.html.twig',[
+            'form'=>$form->createView(),
+            'ad'=> $ad
+        ]);
 
     }
 
