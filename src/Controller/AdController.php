@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Image;
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
 
@@ -40,11 +41,17 @@ class AdController extends Controller
 
     public function create(Request $request){
 
+
         $ad = new ad;
+
         $form= $this->createForm(AnnonceType::class, $ad);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $manager = $this->getDoctrine()->getManager();
+            foreach($ad->getImages()as $image){
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
             $manager->persist($ad);
             $manager->flush();
 

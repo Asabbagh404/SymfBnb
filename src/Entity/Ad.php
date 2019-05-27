@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Valiadtor\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -22,6 +24,8 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=10,max=255, minMessage="Titre doit faire plus de 10 caractere",
+        maxMessage="Le titre ne peut pas faire plus de 255 caractères")
      */
     private $title;
 
@@ -37,6 +41,9 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
+     * Length(min=20,max=1500, minMessage="Titre doit faire plus de 20 caractere",
+    maxMessage="Le titre ne peut pas faire plus de 1500 caractères")
+
      */
     private $introduction;
 
@@ -47,6 +54,7 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $coverImage;
 
@@ -64,10 +72,11 @@ class Ad
     {
         $this->images = new ArrayCollection();
     }
-/*
+/**
  * Permet d'initialiser le slug
  * @ORM\PrePersist
  * @ORM\PreUpdate
+ *
  * @return void
  */
     public function initializeSlug(){
